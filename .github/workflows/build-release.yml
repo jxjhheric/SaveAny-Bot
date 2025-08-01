@@ -38,7 +38,7 @@ jobs:
     strategy:
       matrix:
         goos: [linux]
-        goarch: [armel]
+        goarch: [arm]
         exclude:
           - goos: windows
             goarch: arm64
@@ -51,7 +51,17 @@ jobs:
         run: |
           VERSION=$(echo "${{ github.ref }}" | sed 's/refs\/tags\/v//')
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
-
+          
+      - name: Build Go Binary for ARMv5
+        if: matrix.goarch == 'arm'
+        run: |
+          export GOOS=${{ matrix.goos }}
+          export GOARCH=${{ matrix.goarch }}
+          export GOARM=5
+          go build -o your-binary-name main.go
+        env:
+          CGO_ENABLED: 0
+          
       - name: Release Go Binary
         uses: wangyoucao577/go-release-action@v1
         with:
