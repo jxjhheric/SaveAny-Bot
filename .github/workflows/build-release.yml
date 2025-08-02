@@ -68,6 +68,7 @@ jobs:
           pre_command: export CGO_ENABLED=0
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
+          goarm: 5
           github_token: ${{ secrets.GITHUB_TOKEN }}
           extra_files: |
             LICENSE
